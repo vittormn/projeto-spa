@@ -8,9 +8,9 @@ body {
   min-height: 100vh;
 }
 
-/* Barra superior */
+/* ---------- Barra superior ---------- */
 header {
-  background: #101010cc;
+  background: #101010e6;
   border-bottom: 1px solid #232323;
   position: sticky;
   top: 0;
@@ -65,11 +65,11 @@ nav button.ativo {
   box-shadow: inset 0 -2px 0 #00a4dc;
 }
 
-/* Conteúdo */
+/* ---------- Conteúdo ---------- */
 main {
   max-width: 1100px;
   margin: 0 auto;
-  padding: 40px 20px;
+  padding: 32px 20px 60px;
 }
 
 h1 {
@@ -78,9 +78,28 @@ h1 {
   font-weight: 500;
 }
 
+h2 {
+  font-size: 20px;
+  font-weight: 500;
+  margin: 34px 0 12px;
+}
+
 p {
   line-height: 1.6;
   color: #bdbdbd;
+}
+
+/* Banner da tela inicial */
+.banner {
+  padding: 40px 32px;
+  border-radius: 10px;
+  background: linear-gradient(120deg, #aa5cc355, #00a4dc44), #181818;
+  border: 1px solid #262626;
+}
+
+.banner h1 {
+  font-size: 36px;
+  margin-bottom: 8px;
 }
 
 .contador {
@@ -94,13 +113,13 @@ p {
 }
 
 .acoes {
-  margin-top: 24px;
+  margin-top: 22px;
   display: flex;
   gap: 10px;
   flex-wrap: wrap;
 }
 
-/* Botões */
+/* ---------- Botões ---------- */
 .botao {
   border: 0;
   background: #00a4dc;
@@ -118,14 +137,13 @@ p {
 
 .botao.secundario {
   background: #ffffff1a;
-  color: #fff;
 }
 
 .botao.secundario:hover {
   background: #ffffff2e;
 }
 
-/* Formulário */
+/* ---------- Formulário ---------- */
 form {
   max-width: 500px;
   background: #181818;
@@ -170,115 +188,144 @@ input:focus {
 }
 
 .vazio {
-  margin-top: 20px;
   padding: 24px;
   border: 1px dashed #3a3a3a;
   border-radius: 8px;
   color: #9a9a9a;
 }
 
-/* Grade de cards (estilo pôsteres) */
+/* ---------- Cards (pôsteres) ---------- */
 .grade {
-  margin-top: 24px;
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(165px, 1fr));
   gap: 22px;
+  margin-top: 24px;
+}
+
+.fileira {
+  display: flex;
+  gap: 18px;
+  overflow-x: auto;
+  padding: 6px 4px 14px;
+}
+
+.fileira .card {
+  flex: 0 0 160px;
 }
 
 .card {
-  background: #181818;
+  position: relative;
   border-radius: 6px;
-  overflow: hidden;
-  display: flex;
-  flex-direction: column;
-  transition: transform 0.2s, box-shadow 0.2s;
+  transition: transform 0.2s;
 }
 
 .card:hover {
-  transform: scale(1.04);
-  box-shadow: 0 8px 24px #000a;
+  transform: scale(1.05);
+  z-index: 2;
 }
 
-.capa {
-  aspect-ratio: 3 / 4;
+.poster {
+  position: relative;
+  aspect-ratio: 2 / 3;
+  border-radius: 6px;
+  overflow: hidden;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 64px;
+  font-size: 72px;
   font-weight: 700;
-  color: #ffffffcc;
-  background: linear-gradient(160deg, #aa5cc3, #00a4dc);
+  color: #ffffffd9;
+  box-shadow: 0 4px 14px #0008;
 }
 
-.card.emprestado .capa {
-  background: linear-gradient(160deg, #3a3a3a, #1b1b1b);
-  color: #ffffff66;
+.card.emprestado .poster {
+  filter: grayscale(0.85) brightness(0.7);
 }
 
-.card-corpo {
-  padding: 12px 12px 6px;
-  flex: 1;
-}
-
-.card-corpo h3 {
-  margin: 0 0 4px;
-  font-size: 15px;
+.selo {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  font-size: 11px;
   font-weight: 600;
-}
-
-.card-corpo p {
-  margin: 2px 0;
-  font-size: 13px;
-  color: #9a9a9a;
-}
-
-.status {
-  display: inline-block;
-  margin-top: 8px;
-  font-size: 12px;
-  padding: 3px 10px;
+  padding: 3px 8px;
   border-radius: 10px;
-  background: #00a4dc2e;
-  color: #5cc8ee;
+  background: #000a;
+  color: #7fd8f7;
 }
 
-.card.emprestado .status {
-  background: #aa5cc333;
-  color: #d29be6;
+.card.emprestado .selo {
+  color: #e2b4f2;
 }
 
-.card-acoes {
+/* Botões que aparecem ao passar o mouse */
+.sobreposicao {
+  position: absolute;
+  inset: 0;
   display: flex;
-  gap: 6px;
-  padding: 8px 12px 12px;
+  flex-direction: column;
+  justify-content: flex-end;
+  gap: 8px;
+  padding: 12px;
+  background: linear-gradient(to top, #000d 10%, #0000 70%);
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+
+.card:hover .sobreposicao {
+  opacity: 1;
 }
 
 .alterar,
 .excluir {
-  flex: 1;
-  padding: 7px;
+  padding: 8px;
   border-radius: 4px;
   cursor: pointer;
-  background: transparent;
   font-size: 13px;
+  font-weight: 600;
 }
 
 .alterar {
-  border: 1px solid #00a4dc;
-  color: #00a4dc;
+  border: 0;
+  background: #00a4dc;
+  color: #fff;
 }
 
 .alterar:hover {
-  background: #00a4dc22;
+  background: #1fb8f0;
 }
 
 .excluir {
-  border: 1px solid #5a5a5a;
-  color: #bdbdbd;
+  border: 1px solid #ffffff55;
+  background: #0006;
+  color: #fff;
 }
 
 .excluir:hover {
   border-color: #e5484d;
-  color: #e5484d;
+  color: #ff7276;
 }
+
+.info {
+  padding: 8px 2px 0;
+}
+
+.info h3 {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 600;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.info p {
+  margin: 2px 0 0;
+  font-size: 12px;
+  color: #9a9a9a;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
 

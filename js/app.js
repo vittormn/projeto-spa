@@ -2,7 +2,8 @@
 // Se a página for atualizada, os livros cadastrados serão apagados.
 const livros = [
   { titulo: "Dom Casmurro", autor: "Machado de Assis", genero: "Romance", ano: "1899", disponivel: true },
-  { titulo: "O Hobbit", autor: "J. R. R. Tolkien", genero: "Fantasia", ano: "1937", disponivel: false }
+  { titulo: "O Hobbit", autor: "J. R. R. Tolkien", genero: "Fantasia", ano: "1937", disponivel: false },
+  { titulo: "1984", autor: "George Orwell", genero: "Ficção", ano: "1949", disponivel: true }
 ];
 
 const app = document.querySelector("#app");
@@ -13,6 +14,14 @@ function escapar(texto) {
   const div = document.createElement("div");
   div.textContent = texto;
   return div.innerHTML;
+}
+
+// Cada livro recebe uma cor de capa calculada a partir do título
+function corDaCapa(titulo) {
+  let soma = 0;
+  for (const letra of titulo) soma += letra.charCodeAt(0);
+  const matiz = (soma * 37) % 360;
+  return `linear-gradient(160deg, hsl(${matiz}, 55%, 45%), hsl(${(matiz + 50) % 360}, 60%, 28%))`;
 }
 
 function marcarMenuAtivo(rota) {
@@ -30,27 +39,69 @@ function irPara(rota) {
   if (rota === "sobre") mostrarSobre();
 }
 
+// Monta o HTML de um card. Com acoes = true, mostra os botões ao passar o mouse.
+function criarCard(livro, indice, acoes) {
+  const botoes = acoes ? `
+    <div class="sobreposicao">
+      <button class="alterar" data-indice="${indice}">
+        ${livro.disponivel ? "Emprestar" : "Devolver"}
+      </button>
+      <button class="excluir" data-indice="${indice}">Excluir</button>
+    </div>
+  ` : "";
+
+  return `
+    <div class="card ${livro.disponivel ? "" : "emprestado"}">
+      <div class="poster" style="background: ${corDaCapa(livro.titulo)}">
+        ${escapar(livro.titulo.charAt(0).toUpperCase())}
+        <span class="selo">${livro.disponivel ? "Disponível" : "Emprestado"}</span>
+        ${botoes}
+      </div>
+      <div class="info">
+        <h3>${escapar(livro.titulo)}</h3>
+        <p>${escapar(livro.autor)} • ${escapar(livro.ano)}</p>
+      </div>
+    </div>
+  `;
+}
+
+function montarFileira(titulo, lista) {
+  if (lista.length === 0) {
+    return `<h2>${titulo}</h2><div class="vazio">Nenhum livro aqui.</div>`;
+  }
+
+  let cards = "";
+  lista.forEach(livro => {
+    cards += criarCard(livro, livros.indexOf(livro), false);
+  });
+
+  return `<h2>${titulo}</h2><div class="fileira">${cards}</div>`;
+}
+
 function mostrarInicio() {
-  const emprestados = livros.filter(l => !l.disponivel).length;
-  const disponiveis = livros.length - emprestados;
+  const disponiveis = livros.filter(l => l.disponivel);
+  const emprestados = livros.filter(l => !l.disponivel);
 
   app.innerHTML = `
-    <h1>Bem-vindo à BiblioTEX</h1>
-    <p>
-      Cadastre os livros do acervo e controle quais estão disponíveis
-      ou emprestados. A navegação acontece sem recarregar a página.
-    </p>
+    <section class="banner">
+      <h1>Bem-vindo à Biblioteca</h1>
+      <p>
+        Cadastre livros e controle quais estão disponíveis ou emprestados.
+        A navegação acontece sem recarregar a página.
+      </p>
+      <div class="contador">
+        No acervo: <strong>${livros.length}</strong> |
+        Disponíveis: <strong>${disponiveis.length}</strong> |
+        Emprestados: <strong>${emprestados.length}</strong>
+      </div>
+      <div class="acoes">
+        <button class="botao" id="btnCadastrar">Cadastrar livro</button>
+        <button class="botao secundario" id="btnVerLivros">Ver meus livros</button>
+      </div>
+    </section>
 
-    <div class="contador">
-      Livros no acervo: <strong>${livros.length}</strong> |
-      Disponíveis: <strong>${disponiveis}</strong> |
-      Emprestados: <strong>${emprestados}</strong>
-    </div>
-
-    <div class="acoes">
-      <button class="botao" id="btnCadastrar">Cadastrar livro</button>
-      <button class="botao secundario" id="btnVerLivros">Ver meus livros</button>
-    </div>
+    ${montarFileira("Disponíveis", disponiveis)}
+    ${montarFileira("Emprestados", emprestados)}
   `;
 
   document.querySelector("#btnCadastrar")
@@ -111,7 +162,7 @@ function mostrarCadastro() {
 function mostrarLista() {
   app.innerHTML = `
     <h1>Meus Livros</h1>
-    <p>Os cards abaixo são criados dinamicamente pelo JavaScript a partir do array de livros.</p>
+    <p>Passe o mouse sobre um card para emprestar, devolver ou excluir o livro.</p>
     <div id="conteudoLista"></div>
   `;
 
@@ -122,34 +173,13 @@ function renderizarLista() {
   const conteudo = document.querySelector("#conteudoLista");
 
   if (livros.length === 0) {
-    conteudo.innerHTML = `
-      <div class="vazio">
-        Nenhum livro cadastrado ainda.
-      </div>
-    `;
+    conteudo.innerHTML = `<div class="vazio">Nenhum livro cadastrado ainda.</div>`;
     return;
   }
 
   let cards = "";
-
   livros.forEach((livro, indice) => {
-    cards += `
-      <div class="card ${livro.disponivel ? "" : "emprestado"}">
-        <div class="capa">${escapar(livro.titulo.charAt(0).toUpperCase())}</div>
-        <div class="card-corpo">
-          <h3>${escapar(livro.titulo)}</h3>
-          <p>${escapar(livro.autor)}</p>
-          <p>${escapar(livro.genero)} • ${escapar(livro.ano)}</p>
-          <span class="status">${livro.disponivel ? "Disponível" : "Emprestado"}</span>
-        </div>
-        <div class="card-acoes">
-          <button class="alterar" data-indice="${indice}">
-            ${livro.disponivel ? "Emprestar" : "Devolver"}
-          </button>
-          <button class="excluir" data-indice="${indice}">Excluir</button>
-        </div>
-      </div>
-    `;
+    cards += criarCard(livro, indice, true);
   });
 
   conteudo.innerHTML = `<div class="grade">${cards}</div>`;
@@ -175,7 +205,7 @@ function mostrarSobre() {
   app.innerHTML = `
     <h1>Sobre o projeto</h1>
     <p>
-      A Bibliotex é uma Single Page Application (SPA) de Biblioteca de Livros feita por vittor santos de jesus,
+      Esta é uma Single Page Application (SPA) de Biblioteca de Livros,
       desenvolvida como atividade da disciplina de Front-end Frameworks.
     </p>
     <p>
@@ -184,8 +214,8 @@ function mostrarSobre() {
     </p>
     <p>
       O projeto demonstra cadastro em array, manipulação do DOM, eventos de clique,
-      envio de formulário, listagem, alteração de status (disponível/emprestado)
-      e exclusão de livros.
+      envio de formulário, listagem em cards, alteração de status
+      (disponível/emprestado) e exclusão de livros.
     </p>
   `;
 }
@@ -197,5 +227,3 @@ botoesMenu.forEach(botao => {
 });
 
 mostrarInicio();
-
-
