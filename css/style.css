@@ -2,80 +2,95 @@
 
 body {
   margin: 0;
-  font-family: Arial, Helvetica, sans-serif;
-  background: #141414;
-  color: #f1f1f1;
+  font-family: "Segoe UI", Arial, Helvetica, sans-serif;
+  background: #101010;
+  color: #e8e8e8;
   min-height: 100vh;
 }
 
+/* Barra superior */
 header {
-  background: #000;
-  border-bottom: 1px solid #2a2a2a;
+  background: #101010cc;
+  border-bottom: 1px solid #232323;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  backdrop-filter: blur(8px);
 }
 
 .topo {
-  max-width: 1000px;
+  max-width: 1100px;
   margin: 0 auto;
-  padding: 14px 20px;
+  padding: 12px 20px;
   display: flex;
   align-items: center;
-  gap: 30px;
+  gap: 28px;
   flex-wrap: wrap;
 }
 
 .marca {
-  color: #e50914;
-  font-size: 28px;
-  font-weight: bold;
-  letter-spacing: 2px;
+  font-size: 24px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  background: linear-gradient(90deg, #aa5cc3, #00a4dc);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
 }
 
 nav {
   display: flex;
-  gap: 6px;
+  gap: 4px;
   flex-wrap: wrap;
 }
 
 nav button {
   border: 0;
   background: transparent;
-  color: #ccc;
-  padding: 10px 14px;
+  color: #b5b5b5;
+  padding: 9px 14px;
   cursor: pointer;
   font-size: 15px;
-  border-radius: 6px;
+  border-radius: 4px;
 }
 
 nav button:hover {
   color: #fff;
-  background: #222;
+  background: #ffffff14;
 }
 
 nav button.ativo {
   color: #fff;
-  background: #2b2b2b;
+  background: #00a4dc33;
+  box-shadow: inset 0 -2px 0 #00a4dc;
 }
 
+/* Conteúdo */
 main {
-  max-width: 1000px;
+  max-width: 1100px;
   margin: 0 auto;
   padding: 40px 20px;
 }
 
 h1 {
   margin-top: 0;
-  font-size: 32px;
+  font-size: 30px;
+  font-weight: 500;
 }
 
 p {
   line-height: 1.6;
-  color: #cfcfcf;
+  color: #bdbdbd;
 }
 
 .contador {
   margin-top: 16px;
   font-size: 15px;
-  color: #aaa;
+  color: #9a9a9a;
+}
+
+.contador strong {
+  color: #00a4dc;
 }
 
 .acoes {
@@ -85,32 +100,38 @@ p {
   flex-wrap: wrap;
 }
 
+/* Botões */
 .botao {
-  border: 1px solid #e50914;
-  background: #e50914;
+  border: 0;
+  background: #00a4dc;
   color: #fff;
-  padding: 11px 18px;
+  padding: 11px 20px;
   cursor: pointer;
-  border-radius: 6px;
+  border-radius: 4px;
   font-size: 15px;
+  font-weight: 600;
 }
 
 .botao:hover {
-  background: #f6121d;
+  background: #1fb8f0;
 }
 
 .botao.secundario {
-  background: transparent;
-  border-color: #666;
+  background: #ffffff1a;
   color: #fff;
 }
 
 .botao.secundario:hover {
-  background: #2a2a2a;
+  background: #ffffff2e;
 }
 
+/* Formulário */
 form {
   max-width: 500px;
+  background: #181818;
+  padding: 24px;
+  border-radius: 8px;
+  border: 1px solid #262626;
 }
 
 .campo {
@@ -119,134 +140,145 @@ form {
 
 label {
   display: block;
-  font-weight: bold;
+  font-size: 14px;
+  color: #bdbdbd;
   margin-bottom: 6px;
 }
 
 input {
   width: 100%;
   padding: 11px;
-  border: 1px solid #444;
-  border-radius: 6px;
+  border: 1px solid #333;
+  border-radius: 4px;
   font-size: 15px;
-  background: #222;
+  background: #101010;
   color: #fff;
 }
 
 input:focus {
-  outline: 2px solid #e50914;
-  border-color: transparent;
+  outline: none;
+  border-color: #00a4dc;
+  box-shadow: 0 0 0 2px #00a4dc44;
 }
 
 .mensagem {
   margin-top: 14px;
   padding: 10px;
-  background: #1e3a24;
-  color: #b8f0c4;
-  border-radius: 6px;
+  background: #00a4dc22;
+  color: #7fd8f7;
+  border-radius: 4px;
 }
 
 .vazio {
   margin-top: 20px;
   padding: 24px;
-  border: 1px dashed #555;
-  border-radius: 6px;
-  color: #aaa;
+  border: 1px dashed #3a3a3a;
+  border-radius: 8px;
+  color: #9a9a9a;
 }
 
+/* Grade de cards (estilo pôsteres) */
 .grade {
   margin-top: 24px;
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-  gap: 18px;
+  grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
+  gap: 22px;
 }
 
 .card {
-  background: #1f1f1f;
-  border: 1px solid #2f2f2f;
-  border-radius: 8px;
+  background: #181818;
+  border-radius: 6px;
   overflow: hidden;
   display: flex;
   flex-direction: column;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.card:hover {
+  transform: scale(1.04);
+  box-shadow: 0 8px 24px #000a;
 }
 
 .capa {
-  height: 120px;
+  aspect-ratio: 3 / 4;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 48px;
-  font-weight: bold;
-  color: #fff;
-  background: linear-gradient(135deg, #e50914, #7a0409);
+  font-size: 64px;
+  font-weight: 700;
+  color: #ffffffcc;
+  background: linear-gradient(160deg, #aa5cc3, #00a4dc);
+}
+
+.card.emprestado .capa {
+  background: linear-gradient(160deg, #3a3a3a, #1b1b1b);
+  color: #ffffff66;
 }
 
 .card-corpo {
-  padding: 14px;
+  padding: 12px 12px 6px;
   flex: 1;
 }
 
 .card-corpo h3 {
-  margin: 0 0 6px;
-  font-size: 17px;
+  margin: 0 0 4px;
+  font-size: 15px;
+  font-weight: 600;
 }
 
 .card-corpo p {
   margin: 2px 0;
-  font-size: 14px;
-  color: #aaa;
+  font-size: 13px;
+  color: #9a9a9a;
 }
 
 .status {
   display: inline-block;
-  margin-top: 10px;
+  margin-top: 8px;
   font-size: 12px;
   padding: 3px 10px;
-  border-radius: 12px;
-  background: #1e5a2d;
-  color: #c9f7d4;
+  border-radius: 10px;
+  background: #00a4dc2e;
+  color: #5cc8ee;
 }
 
 .card.emprestado .status {
-  background: #6b4e00;
-  color: #ffe19a;
-}
-
-.card.emprestado .capa {
-  background: linear-gradient(135deg, #555, #222);
+  background: #aa5cc333;
+  color: #d29be6;
 }
 
 .card-acoes {
   display: flex;
-  gap: 8px;
-  padding: 0 14px 14px;
+  gap: 6px;
+  padding: 8px 12px 12px;
 }
 
 .alterar,
 .excluir {
   flex: 1;
-  padding: 8px;
-  border-radius: 5px;
+  padding: 7px;
+  border-radius: 4px;
   cursor: pointer;
   background: transparent;
-  font-size: 14px;
+  font-size: 13px;
 }
 
 .alterar {
-  border: 1px solid #4aa3ff;
-  color: #4aa3ff;
+  border: 1px solid #00a4dc;
+  color: #00a4dc;
 }
 
 .alterar:hover {
-  background: #4aa3ff22;
+  background: #00a4dc22;
 }
 
 .excluir {
-  border: 1px solid #ff5a5a;
-  color: #ff5a5a;
+  border: 1px solid #5a5a5a;
+  color: #bdbdbd;
 }
 
 .excluir:hover {
-  background: #ff5a5a22;
+  border-color: #e5484d;
+  color: #e5484d;
 }
 
